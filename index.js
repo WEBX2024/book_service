@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 // mongodb configuration
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = "mongodb+srv://book_store_db:MqZo3mEcTHYs6Cwt@authorization.cmcwb.mongodb.net/?retryWrites=true&w=majority&appName=Authorization";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -48,7 +48,24 @@ async function run() {
       res.send(result); 
     })
     // update a book data: patch or update method
-    app.patch()
+    app.patch("/book/:id", async(req,res)=>{
+      const id = req.params.id;
+      //console.log(id);
+      const updateBookData = req.body;
+
+
+      const filter = {_id: new ObjectId(id)};
+      const options = {upsert : true};
+
+      const updateDoc={
+        $set: {
+          ...updateBookData
+        }
+      }
+      //update
+      const result = await bookCollections.updateOne(filter, updateDoc, options);
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
