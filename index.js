@@ -49,11 +49,11 @@ async function run() {
     })
 
     //get all the books from the database
-    app.get("/all-books", async(req, res)=>{
-      const books =  bookCollections.find();
-      const result = await books.toArray();
-      res.send(result); 
-    })
+    // app.get("/all-books", async(req, res)=>{
+    //   const books =  bookCollections.find();
+    //   const result = await books.toArray();
+    //   res.send(result); 
+    // })
 
 
 
@@ -91,7 +91,7 @@ async function run() {
       if (req.query?.category){
         query = {category: req.query.category}
       }
-      const result = await bookCollections.find(query).toArray;
+      const result = await bookCollections.find(query).toArray();
       res.send(result);
     })
 
